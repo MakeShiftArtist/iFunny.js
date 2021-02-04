@@ -41,10 +41,24 @@ class User extends FreshObject {
 
             return new User(response.data.data.id, { client: this.client, data: response.data.data })
         } catch (err) {
-            if (err.response && err.response.data.error === 'not_found' || err.response.data.error === 'user_is_unavailable') {
+            if (err.response && err.response.data.error === 'not_found'
+            || err.response.data.error === 'user_is_unavailable') {
                 return null
             }
 
+            throw err
+        }
+    }
+
+    static async by_id(id, opts = {}) {
+        if (!opts.user) {
+            let Client = require('./Client')
+            opts.client = new Client()
+        }
+
+        try {
+            return new User(response.data.data.id, { client: this.client })
+        } catch (err) {
             throw err
         }
     }
